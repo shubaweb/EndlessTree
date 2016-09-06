@@ -3,9 +3,10 @@ function sendAjax(data, opt) { //data = объект отправляемых д
     //console.log(data);
     //console.log(opt);
     if (opt === undefined) {
-        opt = {url: 'index.php',
-               data: data,
-               dataType: 'json'};
+        opt = {
+            url: 'index.php',
+            data: data
+        };
     }
     return $.post(opt);
 }
@@ -26,7 +27,12 @@ function handlerChangePath(select){
         }
     }
     var data = {parent_id:select.options[select.selectedIndex].value, caller_name:select.name}; //готовим данные к отправке
-    sendAjax(data).done(function (data) {
+    var opt = {
+        url: 'index.php',
+        data: data,
+        dataType: 'json'
+    };
+    sendAjax(data, opt).done(function (data) {
         showNextLevelSelect(data, select.parentElement, select.dataset.formId, select.name);
     });
 }
@@ -85,7 +91,7 @@ function handlerSubmitAddForm(form) {
     var name = form.elements.catName.value;
     var level = form.elements.setparent.id;
     var parent_id = form.elements.setparent.options[form.elements.setparent.selectedIndex].value;
-    var caller_name = form.name;
+    var caller_name = form.id;
     var data = {name:name, parent_id:parent_id, level:++level, caller_name:caller_name};
-    sendAjax(data).done(function(){alert('Категория добавлена в базу. \n Для того что бы увидеть ее в структуре, обновите базу')});
+    sendAjax(data).done(function(data){alert(data)});
 }
